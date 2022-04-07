@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- CSS only -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>ez-pay</title>
+
+</head>
+<body>
+	<div class="container">
+		<form class="needs-validation" id="ezForm" novalidate method="GET" name="epaySubmit" action="https://secure.usaepay.com/pay/pnkt6jxnrgqbqhjng/WnIGqEDt" target="_onblank" autocomplete="off">
+			<div class="input-group mb-3">
+				<span class="input-group-text">First Name</span>
+				<input type="text" class="form-control" name="UMbillfname" id="fname" required>
+				<div class="invalid-feedback">
+	        		Please enter a First Name.
+	      		</div>
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Last Name</span>
+				<input type="text" class="form-control" name="UMbilllname" id="lname" required>
+				<div class="invalid-feedback">
+	        		Please enter a Last Name.
+	      		</div>			
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Email</span>
+				<input type="email" class="form-control" id="email" name="UMemail" onchange="validateEmail()" required>
+				<div class="invalid-feedback">
+	        		Please enter a valid Email.
+	      		</div>
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Order Total</span>
+				<input type="number" class="form-control" step=".01" id="oTotal" onchange="oCheck()" required>
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">Finance amount</span>
+				<input type="number" step=".01" class="form-control" id="fTotal" onchange="fCheck()" required>
+				<div class="invalid-feedback" id="fTotal-error">
+	        		Please enter a valid Amount. Amount can't be more than the order total.
+	      		</div>
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">First Payment Date</span>
+				<input type="date" name="firstDate" class="form-control" id="date" onchange="dateCheck()" required>
+				<div class="invalid-feedback">
+	        		You must choose a date between <span id="eminDate"></span> to <span id="emaxDate"></span>
+	      		</div>
+			</div>
+			
+			<input type="hidden" name="UMamount" id="subIamount" value="2.45"><!-- intial amount -->
+			<input type="hidden" name="UMnumleft" value="3"><!-- number of payments -->
+			<input type="hidden" name="UMbillamount" id="subPamount" value="15.15"><!-- payment amount -->
+			<input type="hidden" name="UMstart"	id="subDate" value="2022-03-08"><!-- date of first payment -->
+
+			<div class="text-center hidden" id="orderValues">
+				<hr>
+				<span id="orderTotal"></span><br>
+				<span id="financeTotal"></span><br>
+				<span id="initialPayment"></span><br>
+				<span id="paymentAmount"></span><hr>
+				<span id="firstDate"></span><span id="firstPay"></span><br>
+				<span id="secondDate"></span><span id="secondPay"></span><br>
+				<span id="thirdDate"></span><span id="thirdPay"></span><hr>
+			</div>
+			<input type="hidden" name="" id="ezSubmit" class="btn btn-outline-primary btn-lg">
+			<input type="hidden" target="_onblank" onclick="fCheck(); printDiv('printableArea')" id="printForm" value="Print Form" class="btn btn-outline-primary btn-lg">
+		</form>	
+	</div>
+	<div id="printableArea" class="hidden">
+  		<section class="printForm">
+	  		<h2 class="text-center">AC Uniforms EZ Pay Agreement</h2>
+	  		<h4 class="text-center">4 EZ Payments, Zero Interest</h4>
+	  		<div class="hlabel">
+	  			<span>Cardholder Name (as written on the card)<span class="underline">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></span><br>
+	  			<span>Card Number (last 4 digits):<span class="underline">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></span>
+	  			<span>Expiration Date:<span class="underline" >&emsp;&emsp;/&emsp;&emsp;</span></span><br>
+	  			<span>Amount Received Today:<span id="fiPayment" class="underline">&emsp;&emsp;</span></span>
+	  			<span># of Payments:<span class="underline">&emsp;3&emsp;</span></span>
+	  			<span>Amount per Payment:<span class="underline" id="ppAmount">&emsp;&emsp;</span></span><br>
+	  			<span>Date to begin payments:<span class="underline" id="pDate">&emsp;&emsp;</span></span>
+	  		</div>
+	  		<div class="text-center">
+	  			<h4>Payment Schedule</h4>
+	  			<span id="pfirstDate"></span><span id="pfirstPay"></span><br>
+				<span id="psecondDate"></span><span id="psecondPay"></span><br>
+				<span id="pthirdDate"></span><span id="pthirdPay"></span><br><br>
+	  		</div>
+	  		
+	      	<p class="indent">
+	      		This allows AC Uniforms/ Scrub Shop Inc to accept multiple scheduled payments from your credit card. A receipt is available for each payment upon request. You will also find the charge noted on your credit card and/or bank statement *Scrub Shop Inc. You also agree that no prior notification will be provided of these charges.
+	      		
+	      	</p>	
+	      	<p class="indent">
+				I authorize AC Uniforms/ Scrub Shop Inc to charge the credit card detailed above for agreed upon payments listed above on a recurring basis on the bi-weekly until the balance is paid in full. I acknowledge that my information will be kept on file for future transactions. I agree that the any amount still owed after the end of the agreed payments can be deducted in full.
+			</p>
+			<p class="indent">
+				I acknowledge that this authorization will remain in effect until the balance is completed. I also agree to notify the vendor in writing of any changes in my account information and termination of this authorization at least 7 days before the next scheduled billing date. If the payment date above falls on a weekend or holiday, I understand that the charge may be made on the following business day. I understand that ACH transactions are electronic payments and that funds may be withdrawn as soon as the above transfer dates. If an ACH payment is rejected due to Nonsufficient Funds (NSF) I will be notified and charged fee per the AC Uniforms EZ Payment agreement. I also accept that the merchant may process the charge again within 24 hours.</p>
+			<p class="indent">	
+				I also certify that I am the owner of the credit card described above and will not dispute the scheduled payments with my bank/credit card company, provided that the transactions correctly correspond with the terms written on this authorization form.
+			</p>
+			<div class="hlabel">
+			 	<span>Print Name:<span class="underline" id="pFullName">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></span>
+			 	<span>Date:<span class="underline" id="pToday">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></span><br><br>
+			 	<span>Authorized Signature<span class="underline">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></span>
+
+			</div>
+		</section>
+		<script type="text/javascript" src="script.js">	</script>
+	</div>
+	
+</body>
+</html>
