@@ -34,23 +34,14 @@
 	      		</div>
 			</div>
 			<div class="input-group mb-3">
-				<input type="checkbox" name="voucher" id="vCheckbox">
-				<label for="vCheckbox">&emsp;Has voucher?</label>
-			</div>
-			<div class="input-group mb-3">
 				<span class="input-group-text">Order Total</span>
 				<input type="number" class="form-control" step=".01" id="oTotal" onchange="oCheck()" required>
 			</div>
-			
-			<div class="input-group mb-3 hidden" id="fVoucher">
-				<span class="input-group-text">Voucher Amount</span>
-				<input type="number" class="form-control" step=".01" id="vTotal" value="0" onchange="fCheck()" required>
-			</div>
 			<div class="input-group mb-3">
 				<span class="input-group-text">Finance amount</span>
-				<input type="number" step=".01" class="form-control" id="fTotal" value="" onchange="fCheck()" required>
+				<input type="number" step=".01" class="form-control" id="fTotal" onchange="fCheck()" required>
 				<div class="invalid-feedback" id="fTotal-error">
-	        		Please enter a valid Amount. Amount can't be more than the order total (<span id="eOrderTotal"></span>).
+	        		Please enter a valid Amount. Amount can't be more than the order total.
 	      		</div>
 			</div>
 			<div class="input-group mb-3">
@@ -68,11 +59,10 @@
 
 			<div class="text-center hidden" id="orderValues">
 				<hr>
-				<p id="orderTotal"></p>
-				<p id="voucherTotal"></p>
-				<p id="financeTotal"></p>
-				<p id="initialPayment"></p>
-				<p id="paymentAmount"></p><hr>
+				<span id="orderTotal"></span><br>
+				<span id="financeTotal"></span><br>
+				<span id="initialPayment"></span><br>
+				<span id="paymentAmount"></span><hr>
 				<span id="firstDate"></span><span id="firstPay"></span><br>
 				<span id="secondDate"></span><span id="secondPay"></span><br>
 				<span id="thirdDate"></span><span id="thirdPay"></span><hr>
@@ -124,5 +114,5 @@
 	</div>
 	
 </body>
-<!-- Version: 1.1 Comments: Added in voucher option -->
+<!-- Version: 1.0 Comments: Intial development of ez-pay form -->
 </html>

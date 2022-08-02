@@ -1,4 +1,4 @@
-// Version: 1.1 Comments: Adding voucher option
+// Version: 1.0 Comments: Intial development of ez-pay form
 // Grabbing today and converting it t othe 3 dates needed for the .Date field
 const today = new Date();
 const min = new Date(today.getFullYear(), today.getMonth(), (today.getDate()+1));
@@ -6,7 +6,7 @@ const def = new Date(today.getFullYear(), today.getMonth(), (today.getDate()+14)
 const max = new Date(today.getFullYear(), today.getMonth(), (today.getDate()+21));
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
-const version = "Version: 1.1 Comments: Added voucher "
+const version = "Version: 1.0 Comments: Intial development of ez-pay form"
 var year = getParameterByName('year');
 window.onload = function() {
 	myFunction();
@@ -48,14 +48,10 @@ function dateSch(){
 }	
 // Math for smaller finance than order
 function orderMath(){
-	var	vTot = parseFloat(document.getElementById("vTotal").value).toFixed(2); //
 	var	oTot = parseFloat(document.getElementById("oTotal").value).toFixed(2); // Turns string in to number *has to be inside a function
 	var fTot = parseFloat(document.getElementById("fTotal").value).toFixed(2); //
 	// Checks to see if oTot is the same as fTot to change math
 	var pNum = 3
-	if (vTot > .01){
-		var oTot = (+oTot - +vTot).toFixed(2);
-	}
 	// if (oTot == fTot){
 	// 	// document.getElementById("error-fTotal").innerHTML = "Same";
 	// 	var pNum = 4
@@ -64,14 +60,14 @@ function orderMath(){
 	if ((parseFloat((fTot / pNum).toFixed(2))*3) > +fTot){			
 		var	pAmount = parseFloat(((fTot - .03) / pNum).toFixed(2));	//Check to see if the amount goes over the intial finance amount
 	}																//
-	var iAmount = parseFloat((+oTot - +fTot) + (+fTot - (+pAmount * 3))).toFixed(2); // intial payment amount 
-	var fAmount = (+pAmount * 3).toFixed(2);
+	var iAmount = parseFloat((oTot - fTot) + (fTot - (pAmount * 3))).toFixed(2); // intial payment amount 
+	var fAmount = (pAmount * 3).toFixed(2);
 	if (+iAmount < +pAmount){
-		var pAmount = parseFloat((+fTot / (+pNum +1)).toFixed(2));
+		var pAmount = parseFloat((fTot / (pNum +1)).toFixed(2));
 		var fTot = parseFloat(document.getElementById("fTotal").value - pAmount).toFixed(2);		
-		var	pAmount = parseFloat((+fTot / +pNum).toFixed(2));	//Check to see if the amount goes over the intial finance amount
-		var iAmount = parseFloat((+oTot - +fTot) + (+fTot - (+pAmount * 3))).toFixed(2); // intial payment amount 
-		var fAmount = (+pAmount * 3).toFixed(2);
+		var	pAmount = parseFloat((fTot / pNum).toFixed(2));	//Check to see if the amount goes over the intial finance amount
+		var iAmount = parseFloat((oTot - fTot) + (fTot - (pAmount * 3))).toFixed(2); // intial payment amount 
+		var fAmount = (pAmount * 3).toFixed(2);
 	}
 		document.getElementById("orderTotal").innerHTML = "$" + oTot +" Order Total";
 		document.getElementById("financeTotal").innerHTML = "$" + fAmount + " Finance Total";
@@ -93,41 +89,20 @@ function orderMath(){
 		document.getElementById("pfirstPay").innerHTML =" - $" + pAmount.toFixed(2);
 		document.getElementById("psecondPay").innerHTML =" - $" + pAmount.toFixed(2);
 		document.getElementById("pthirdPay").innerHTML =" - $" + pAmount.toFixed(2);
-		if (vTot > .01){
-		document.getElementById("voucherTotal").innerHTML = "$" + vTot +" Voucher Total";
 
-	}
 }
 // Check to make sure finance amount(fTotal) is less than order amount(oTotal)
 function fCheck(){
-	var	vTot = parseFloat(document.getElementById("vTotal").value).toFixed(2); //
 	var	oTot = parseFloat(document.getElementById("oTotal").value).toFixed(2); // Turns string in to number *has to be inside a function
 	var fTot = parseFloat(document.getElementById("fTotal").value).toFixed(2); //
-	
-	if (+vTot > .01){
-		var oTot = (oTot - vTot);
-		document.getElementById("fTotal").max = oTot;
-		console.log("vtot checked" + oTot);
-	} 
-		document.getElementById("fTotal").max = oTot;
-	if (+fTot > 0){
-		document.getElementById("orderValues").classList.add('hidden');
-	} else{
-		return
-	}
-
+	document.getElementById("fTotal").max = oTot
 	if (+oTot < +fTot){
 		document.getElementById("fTotal").classList.add('is-invalid');
-		document.getElementById("orderValues").classList.add('hidden');
-		document.getElementById("ezSubmit").type = "hidden";
-		document.getElementById("printForm").type = "hidden";
-		document.getElementById("eOrderTotal").innerHTML = "$" + oTot;
 	}
 	else {
 		document.getElementById("fTotal").classList.remove('is-invalid');
 		orderMath();
 		dateSch();
-		console.log("not checking");
 	}
 }
 function oCheck(){
@@ -184,22 +159,6 @@ function printDiv(divName) {
 	document.getElementById("fTotal").value = pfTot;
 		
 }
-
-//Beginning of Event listener for voucher check box
-const checkbox = document.getElementById("vCheckbox");
-const voucher = document.getElementById("fVoucher");
-const vtotal = document.getElementById("vTotal");
-checkbox.addEventListener('click',voucherCheck)
-function voucherCheck(){
-	voucher.classList.toggle("hidden");
-	vtotal.value = 0;
- 		
-}
-//End of Event listener for voucher check box	
- 		
- 	
-
-
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function formCheck() {
   'use strict'
