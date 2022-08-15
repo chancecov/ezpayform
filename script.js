@@ -10,6 +10,7 @@ const version = "Version: 1.1 Comments: Added voucher "
 var year = getParameterByName('year');
 window.onload = function() {
 	myFunction();
+
 }; 
 
 
@@ -186,15 +187,15 @@ function printDiv(divName) {
 }
 
 //Beginning of Event listener for voucher check box
-const checkbox = document.getElementById("vCheckbox");
-const voucher = document.getElementById("fVoucher");
-const vtotal = document.getElementById("vTotal");
-checkbox.addEventListener('click',voucherCheck)
+
 function voucherCheck(){
+	const checkbox = document.getElementById("vCheckbox");
+	const voucher = document.getElementById("fVoucher");
+	const vtotal = document.getElementById("vTotal");
 	voucher.classList.toggle("hidden");
 	vtotal.value = 0;
  		
-}
+ }
 //End of Event listener for voucher check box	
  		
  	
